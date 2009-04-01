@@ -25,16 +25,17 @@ class AbstractGuessRenames(object):
         return self._old_to_new
     
     def guess(self):
+        # All edge hashes (each two consecutive lines) in the missing files
         for path in self.iter_missing_files():
             for edge_hash in self._iter_edge_hashes(self.missing_file_lines(path)):
                 self._edge_hashes.setdefault(edge_hash, set()).add(path)
         
+        # For each edge hash in this unknown file, find all missing files with
+        # that edge. Bump the score for each missing file with this edge based
+        # on the rarity of the edge.
         score_tuples = []
         for path in self.iter_unknown_files():
             scores = {}
-            # For each edge hash in this unknown file, find all missing files with
-            # that edge. Bump the score for each missing file with this edge based
-            # on rarity of the edge.
             for edge_hash in self._iter_edge_hashes(self.unknown_file_lines(path)):
                 if self._edge_hashes.has_key(edge_hash):
                     matched_files = self._edge_hashes[edge_hash]
