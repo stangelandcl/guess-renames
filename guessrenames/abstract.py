@@ -4,8 +4,6 @@
 # This software may be used and distributed according to the terms
 # of the GNU General Public License, incorporated herein by reference.
 
-#from abc import ABCMeta, abstractmethod
-
 # Algorithm description is here:
 # http://bundlebuggy.aaronbentley.com/project/bzr/request/%253C49C7A51C.4050000%2540aaronbentley.com%253E
 
@@ -67,29 +65,23 @@ class AbstractGuessRenames(object):
             yield hash(tuple(lines[n:n+2])) % maximum
     
     # Abstract ---
-    
-    #__metaclass__ = ABCMeta
-    
-    #@abstractmethod
+        
     def iter_missing_files(self):
-        yield None
+        while False:
+            yield None
     
-    #@abstractmethod
     def missing_file_lines(self, missing_file):
-        return None
+        raise NotImplementedError
         
-    #@abstractmethod
     def iter_unknown_files(self):
-        yield None
+        while False:
+            yield None
     
-    #@abstractmethod
     def unknown_file_lines(self, unknown_file):
-        return None
+        raise NotImplementedError
     
-    #@abstractmethod
     def record_old_is_new(self, old_file, new_file):
-        pass
+        raise NotImplementedError
         
-    #@abstractmethod
     def strip_root(self, path):
-        return None
+        raise NotImplementedError
