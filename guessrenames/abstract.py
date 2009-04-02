@@ -27,7 +27,7 @@ class AbstractGuessRenames(object):
         for path in self.iter_missing_files():
             for edge_hash in self._iter_edge_hashes(self.missing_file_lines(path)):
                 self._edge_hashes.setdefault(edge_hash, set()).add(path)
-        
+                
         # For each edge hash in this unknown file, find all missing files with
         # that edge. Bump the score for each missing file with this edge based
         # on the rarity of the edge.

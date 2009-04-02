@@ -5,5 +5,5 @@
 # of the GNU General Public License, incorporated herein by reference.
 
 from abstract import *
-from mercurial_cli import *
+from hg import *
 

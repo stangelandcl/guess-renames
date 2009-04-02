@@ -7,7 +7,7 @@
 from __future__ import with_statement
 import subprocess
 import os.path
-import mercurial
+from mercurial import cmdutil
 
 import abstract
 
@@ -20,7 +20,7 @@ class MercurialGuessRenames(abstract.AbstractGuessRenames):
         self._ui = ui
         self._repo = repo
         status = self._repo.status(unknown=True)[3:5]
-        status = [[self._repo.rjoin(path) for path in group] for group in status]
+        status = [[self._repo.wjoin(path) for path in group] for group in status]
         self._missing, self._unknown = status
 
     def iter_missing_files(self):
@@ -28,8 +28,9 @@ class MercurialGuessRenames(abstract.AbstractGuessRenames):
             yield self._missing[i]
     
     def missing_file_lines(self, missing_file):
+        missing_file = self.strip_root(missing_file)
         ctx = self._repo['.']
-        return ctx[file].data().splitlines()
+        return ctx[missing_file].data().splitlines(True)
         
     def iter_unknown_files(self):
         for i in xrange(len(self._unknown)):
@@ -48,4 +49,4 @@ class MercurialGuessRenames(abstract.AbstractGuessRenames):
             del wlock
     
     def strip_root(self, path):
-        return path[len(self._repo.url())+1:]
+        return path[len(self._repo.root)+1:]
