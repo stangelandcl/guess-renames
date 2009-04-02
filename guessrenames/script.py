@@ -6,6 +6,7 @@
 
 import guessrenames
 
-gr = guessrenames.MercurialCLIGuessRenames()
-gr.guess()
-gr.move()
+def main():
+    gr = guessrenames.MercurialCLIGuessRenames()
+    gr.guess()
+    gr.move()
