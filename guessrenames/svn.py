@@ -15,10 +15,10 @@ __all__ = ["SubversionGuessRenames"]
 # Subversion ctypes Python bindings.
 class SubversionGuessRenames(abstract.AbstractGuessRenames):
 
-    def __init__(self):
+    def __init__(self, p):
         super(SubversionGuessRenames, self).__init__()
-        self._svn_st_lines = subprocess.Popen(['svn', 'st'], stderr=subprocess.STDOUT, stdout=subprocess.PIPE).communicate()[0].splitlines()
-        self._root = os.getcwd()
+        self._svn_st_lines = subprocess.Popen(['svn', 'st', p], stderr=subprocess.STDOUT, stdout=subprocess.PIPE).communicate()[0].splitlines()
+        self._root = p
         self._missing_files = self._gen_for_type('!')
         self._unknown_files = self._gen_for_type('?')
         
