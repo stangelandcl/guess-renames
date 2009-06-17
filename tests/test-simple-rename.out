@@ -1,0 +1,40 @@
+*** Repository created.
+*** Files created. Contents:
+*** 1:
+alpha
+bravo
+charlie
+*** 2:
+delta
+echo
+foxtrot
+*** Adding files.
+? 1
+? 2
+adding 1
+adding 2
+A 1
+A 2
+*** Files added.
+*** Renaming.
+*** Renamed. Contents:
+*** 3:
+alpha
+bravo
+charlie
+*** 4:
+delta
+echo
+foxtrot
+*** Guessing.
+! 1
+! 2
+? 3
+? 4
+2 is now 4 (score: 3.000000)
+1 is now 3 (score: 3.000000)
+A 3
+A 4
+R 1
+R 2
+*** Done.
