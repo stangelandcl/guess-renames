@@ -1,0 +1,54 @@
+#!/bin/bash
+
+mkdir testdir
+pushd testdir > /dev/null
+
+hg init
+echo "*** Repository created."
+
+(echo "alpha" && echo "bravo" && echo "charlie") > 1
+(echo "delta" && echo "echo" && echo "foxtrot") > 2
+
+echo "*** Files created. Contents:"
+
+echo "*** 1:"
+cat 1
+echo "*** 2:"
+cat 2
+
+echo "*** Adding files."
+
+hg st
+hg addremove
+hg st
+hg commit -m "Adding"
+
+echo "*** Files added."
+
+echo "*** Renaming and altering."
+
+rm -rf 1
+rm -rf 2
+(echo "one" && echo "bravo" && echo "charlie") > 3
+(echo "four" && echo "echo" && echo "foxtrot") > 4
+
+echo "*** Renamed and altered. Contents:"
+
+echo "*** 3:"
+cat 3
+echo "*** 4:"
+cat 4
+
+echo "*** Guessing."
+
+hg st
+guess-renames
+hg st
+hg commit -m "Renaming"
+hg st
+
+echo "*** Done."
+
+popd > /dev/null
+rm -rf testdir
+exit 0
