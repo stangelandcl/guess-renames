@@ -1,0 +1,52 @@
+*** Creating repository.
+Checked out revision 0.
+*** Repository created.
+*** Files created. Contents:
+*** 1:
+alpha
+bravo
+charlie
+*** 2:
+delta
+echo
+foxtrot
+*** Adding files.
+?       1
+?       2
+A         1
+A         2
+A       1
+A       2
+Adding         1
+Adding         2
+Transmitting file data ..
+Committed revision 1.
+*** Files added.
+*** Renaming.
+*** Renamed. Contents:
+*** 3:
+alpha
+bravo
+charlie
+*** 4:
+delta
+echo
+foxtrot
+*** Guessing.
+?       3
+?       4
+!       1
+!       2
+2 is now 4 (score: 3.000000)
+1 is now 3 (score: 3.000000)
+D       1
+D       2
+A  +    3
+A  +    4
+Deleting       1
+Deleting       2
+Adding         3
+Adding         4
+
+Committed revision 2.
+*** Done.
