@@ -20,7 +20,8 @@ def addremove(orig, repo, pats=[], opts={}, dry_run=None, similarity=None):
     if shouldguess:
         gr = MercurialGuessRenames(repo.ui, repo)
         gr.guess()
-        gr.move()
+        if not dry_run:
+            gr.move()
     
     return orig(repo, pats, opts, dry_run, similarity)
 
