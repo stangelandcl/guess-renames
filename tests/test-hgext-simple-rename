@@ -45,9 +45,9 @@ cat 4
 echo "*** Guessing."
 
 hg st
-# XXX this should not be necessary!
-# Find out how to specify this in the test harness...
-export PYTHONPATH="$PWD/..:$PYTHONPATH"
+# XXX this should not be necessary! It won't work on other machines!
+# Find out how to specify this in the test harness.
+export PYTHONPATH="/Users/cbarrett/Projects/guess-renames:$PYTHONPATH"
 hg --config 'extensions.guessrenames.hgext=' addremove -g
 hg st
 hg commit -m "Renaming"
