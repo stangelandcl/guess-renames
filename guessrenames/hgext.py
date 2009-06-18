@@ -5,34 +5,37 @@
 # of the GNU General Public License, incorporated herein by reference.
 
 from hg import *
-from mercurial import extensions, commands
+from mercurial import extensions, commands, cmdutil
 
-def addremove(orig, ui, repo, *args, **opts):
+def addremove(orig, repo, pats=[], opts={}, dry_run=None, similarity=None):
     shouldguess = False
     if opts['guess']:
         shouldguess = True
         
-    if opts['similarity'] is not '':
-        # Clear to cancel the behavior of the wrapped command
-        opts['similarity'] = ''
+    if similarity:
+        # Clear to cancel the behavior of the wrapped function
+        similarity = 0
         shouldguess = True
         
     if shouldguess:
-        gr = MercurialGuessRenames(ui, repo)
+        gr = MercurialGuessRenames(repo.ui, repo)
         gr.guess()
         gr.move()
     
-    return orig(ui, repo, *args, **opts)
+    return orig(repo, pats, opts, dry_run, similarity)
 
 
 def uisetup(ui):
-    # XXX open question: import also uses the -s option.
-    # determine how to make import use guessrenames too.
     ar = list(commands.table['addremove'])
     opts = ar[1]
     # XXX need to modify 's' to indicate it's deprecated and invokes -g instead.
-    opts.append(('g', 'guess', False, 'guess at file renames'))
+    opts.append(('g', 'guess', False, 'guess renamed files'))
     commands.table['addremove'] = tuple(ar)
-            
-    extensions.wrapcommand(commands.table, 'addremove', addremove)
     
+    import_ = list(commands.table['import|patch'])
+    opts = import_[1]
+    # XXX need to modify 's' to indicate it's deprecated and invokes -g instead.
+    opts.append(('g', 'guess', False, 'guess renamed files'))
+    commands.table['import'] = tuple(import_)
+            
+    extensions.wrapfunction(cmdutil, 'addremove', addremove)
