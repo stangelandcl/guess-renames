@@ -6,4 +6,6 @@
 
 from abstract import *
 from hg import *
+from svn import *
 
+import hgext

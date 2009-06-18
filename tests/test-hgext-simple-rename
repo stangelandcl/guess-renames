@@ -1,0 +1,60 @@
+#!/bin/bash
+# guess-renames
+# Copyright (c) 2009 Colin Barrett <colin@springsandstruts.com>
+#
+# This software may be used and distributed according to the terms
+# of the GNU General Public License, incorporated herein by reference.
+
+mkdir testdir
+pushd testdir > /dev/null
+
+hg init
+echo "*** Repository created."
+
+(echo "alpha" && echo "bravo" && echo "charlie") > 1
+(echo "delta" && echo "echo" && echo "foxtrot") > 2
+
+echo "*** Files created. Contents:"
+
+echo "*** 1:"
+cat 1
+echo "*** 2:"
+cat 2
+
+echo "*** Adding files."
+
+hg st
+hg addremove
+hg st
+hg commit -m "Adding"
+
+echo "*** Files added."
+
+echo "*** Renaming."
+
+mv 1 3
+mv 2 4
+
+echo "*** Renamed. Contents:"
+
+echo "*** 3:"
+cat 3
+echo "*** 4:"
+cat 4
+
+echo "*** Guessing."
+
+hg st
+# XXX this should not be necessary!
+# Find out how to specify this in the test harness...
+export PYTHONPATH="$PWD/..:$PYTHONPATH"
+hg --config 'extensions.guessrenames.hgext=' addremove -g
+hg st
+hg commit -m "Renaming"
+hg st
+
+echo "*** Done."
+
+popd > /dev/null
+rm -rf testdir
+exit 0
