@@ -42,7 +42,14 @@ class MercurialGuessRenames(abstract.AbstractGuessRenames):
             print "ignoring dir or link: %s" % unknown_file
             return []
         with open(unknown_file) as f:
-            return f.readlines()
+            # diff(1) heuristic for binary files
+            bytes = f.read(1024, 'b')
+            f.seek(0)
+            if '\0' in bytes:
+                print "NUL in %s" % unknown_file
+                return [] # XXX better handling of binary files?
+            else:
+                return f.readlines()
 
     def record_old_is_new(self, old_file, new_file):
         #print 'hg mv -A %s %s' % (old_file, new_file)
