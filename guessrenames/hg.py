@@ -37,6 +37,10 @@ class MercurialGuessRenames(abstract.AbstractGuessRenames):
             yield self._unknown[i]
                 
     def unknown_file_lines(self, unknown_file):
+        # XXX do something more intelligent
+        if os.path.isdir(unknown_file) or os.path.islink(unknown_file):
+            print "ignoring dir or link: %s" % unknown_file
+            return []
         with open(unknown_file) as f:
             return f.readlines()
 
