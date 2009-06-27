@@ -8,6 +8,7 @@ from __future__ import with_statement
 import subprocess
 import os.path
 from mercurial import cmdutil
+import hashlib
 
 import abstract
 
@@ -30,25 +31,43 @@ class MercurialGuessRenames(abstract.AbstractGuessRenames):
     def missing_file_lines(self, missing_file):
         missing_file = self.strip_root(missing_file)
         ctx = self._repo['.']
-        return ctx[missing_file].data().splitlines(True)
+        data = ctx[missing_file].data()
+        if '\0' in data[:1024]:
+            return [len(data), hashlib.md5(data).hexdigest()]
+        else:
+            return data.splitlines(True)
         
     def iter_unknown_files(self):
         for i in xrange(len(self._unknown)):
             yield self._unknown[i]
-                
+    
     def unknown_file_lines(self, unknown_file):
-        # XXX do something more intelligent
-        if os.path.isdir(unknown_file) or os.path.islink(unknown_file):
-            #print "ignoring dir or link: %s" % unknown_file
-            return []
         # diff(1) heuristic for binary files
         def isbinary(filename):        
             with open(filename, 'rb') as f:
                 bytes = f.read(1024)
                 return '\0' in bytes
+        
+        # returns (size, hash) as a list
+        def binaryfilelines(filename):
+            md5 = hashlib.md5()
+            with open(filename, 'rb') as f:
+                size = 1048576
+                chunk = f.read(1048576)
+                while chunk:
+                    size += len(chunk)
+                    md5.update(chunk)
+                    chunk = f.read(1048576)
+                return [size, md5.hexdigest()]
+
+        # XXX do something more intelligent
+        if os.path.isdir(unknown_file) or os.path.islink(unknown_file):
+            #print "ignoring dir or link: %s" % unknown_file
+            return []
+            
         if isbinary(unknown_file):
             #print "NUL in %s" % unknown_file
-            return [] # XXX better handling of binary files?
+            return binaryfilelines(unknown_file)
         else:
             with open(unknown_file) as f:
                 return f.readlines()
