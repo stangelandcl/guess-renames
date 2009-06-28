@@ -33,7 +33,7 @@ class MercurialGuessRenames(abstract.AbstractGuessRenames):
         ctx = self._repo['.']
         data = ctx[missing_file].data()
         if '\0' in data[:1024]:
-            return [len(data), hashlib.md5(data).hexdigest()]
+            return [str(len(data)), hashlib.md5(data).hexdigest()]
         else:
             return data.splitlines(True)
         
@@ -58,7 +58,7 @@ class MercurialGuessRenames(abstract.AbstractGuessRenames):
                     size += len(chunk)
                     md5.update(chunk)
                     chunk = f.read(1048576)
-                return [size, md5.hexdigest()]
+                return [str(size), md5.hexdigest()]
 
         # XXX do something more intelligent
         if os.path.isdir(unknown_file) or os.path.islink(unknown_file):
