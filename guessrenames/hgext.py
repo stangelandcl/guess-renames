@@ -10,7 +10,7 @@ import re
 
 def addremove(orig, repo, pats=[], opts={}, dry_run=None, similarity=None):
     shouldguess = False
-    if opts['guess']:
+    if 'guess' in opts and opts['guess']:
         shouldguess = True
         
     if similarity:
