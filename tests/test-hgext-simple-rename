@@ -5,6 +5,15 @@
 # This software may be used and distributed according to the terms
 # of the GNU General Public License, incorporated herein by reference.
 
+export PYTHONPATH="$(dirname $(dirname $0))/testbase/lib/python:$PYTHONPATH"
+echo "[extensions]" >> $HGRCPATH
+echo "guessrenames.hgext=" >> $HGRCPATH
+
+pushd $(dirname $(dirname $0)) > /dev/null
+mkdir -p testbase/lib/python
+python setup.py install --home=testbase > /dev/null
+popd > /dev/null
+
 mkdir testdir
 pushd testdir > /dev/null
 
@@ -45,10 +54,8 @@ cat 4
 echo "*** Guessing."
 
 hg st
-# XXX this should not be necessary! It won't work on other machines!
-# Find out how to specify this in the test harness.
-export PYTHONPATH="/Users/cbarrett/Projects/guess-renames:$PYTHONPATH"
-hg --config 'extensions.guessrenames.hgext=' addremove -g
+
+hg addremove -g
 hg st
 hg commit -m "Renaming"
 hg st
@@ -57,4 +64,9 @@ echo "*** Done."
 
 popd > /dev/null
 rm -rf testdir
+
+pushd $(dirname $(dirname $0)) > /dev/null
+rm -rf testbase
+popd > /dev/null
+
 exit 0

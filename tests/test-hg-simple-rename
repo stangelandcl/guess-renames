@@ -5,6 +5,16 @@
 # This software may be used and distributed according to the terms
 # of the GNU General Public License, incorporated herein by reference.
 
+export PYTHONPATH="$(dirname $(dirname $0))/testbase/lib/python:$PYTHONPATH"
+export PATH="$(dirname $(dirname $0))/testbase/bin:$PATH"
+echo "[extensions]" >> $HGRCPATH
+echo "guessrenames.hgext=" >> $HGRCPATH
+
+pushd $(dirname $(dirname $0)) > /dev/null
+mkdir -p testbase/lib/python
+python setup.py install --home=testbase > /dev/null
+popd > /dev/null
+
 mkdir testdir
 pushd testdir > /dev/null
 
@@ -54,4 +64,9 @@ echo "*** Done."
 
 popd > /dev/null
 rm -rf testdir
+
+pushd $(dirname $(dirname $0)) > /dev/null
+rm -rf testbase
+popd > /dev/null
+
 exit 0
