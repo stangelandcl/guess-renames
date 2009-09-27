@@ -78,7 +78,7 @@ class MercurialGuessRenames(abstract.AbstractGuessRenames):
         try:
             return cmdutil.copy(self._ui, self._repo, (old_file, new_file), {'after': True}, rename=True)
         finally:
-            del wlock
+            wlock.release()
     
     def strip_root(self, path):
         return path[len(self._repo.root)+1:]
