@@ -14,3 +14,6 @@ build
 *.mode1v3
 
 *.pyc
+
+syntax: regexp
+^testbase/.*
