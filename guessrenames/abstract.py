@@ -5,7 +5,7 @@
 # of the GNU General Public License, incorporated herein by reference.
 
 # Algorithm description is here:
-# http://bundlebuggy.aaronbentley.com/project/bzr/request/%253C49C7A51C.4050000%2540aaronbentley.com%253E
+# http://osdir.com/ml/bazaar/2009-03/msg01300.html
 
 __all__ = ["AbstractGuessRenames"]
 
