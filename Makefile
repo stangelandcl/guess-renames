@@ -1,4 +1,4 @@
-PYTHON=python
+PYTHON=python2.7
 
 help:
 	@echo 'Commonly used make targets:'

@@ -5,7 +5,7 @@
 # of the GNU General Public License, incorporated herein by reference.
 
 from hg import *
-from mercurial import extensions, commands, cmdutil
+from mercurial import extensions, commands, scmutil
 import re
 
 def addremove(orig, repo, pats=[], opts={}, dry_run=None, similarity=None):
@@ -57,4 +57,4 @@ def uisetup(ui):
     import_[1].append(('g', 'guess', False, 'guess renamed files'))
     commands.table['import'] = tuple(import_)
             
-    extensions.wrapfunction(cmdutil, 'addremove', addremove)
+    extensions.wrapfunction(scmutil, 'addremove', addremove)
